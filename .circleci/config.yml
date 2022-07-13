@@ -16,6 +16,11 @@ jobs:
       - image: cimg/base:stable
     steps:
       - run: echo world
+  print_name:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo $MY_NAME_VAR
 workflows:
   # Name the workflow "welcome"
   welcome:
