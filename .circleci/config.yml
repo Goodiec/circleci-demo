@@ -80,6 +80,23 @@ jobs:
       # - run: return 1
       - destroy_environment
 
+  configure_infrastructure:
+      docker:
+        - image: python:3.7-alpine3.11
+      steps:
+        - checkout
+        - add_ssh_keys:
+            fingerprints: ["d3:b6:51:6e:0e:e2:5e:af:96:b0:19:bd:ad:c2:7f:3a"] # You can get this ID in the section where you registered the SSH Key
+        - run:
+            name: Install dependencies
+            command: |
+              # install the dependencies needed for your playbook
+              apk add --update ansible
+        - run:
+            name: Configure server
+            command: |
+              ansible-playbook -i inventory.txt main.yml
+
 workflows:
   # Name the workflow "welcome"
   my_workflow:
@@ -92,3 +109,4 @@ workflows:
           requires:
             - upload_file
       - create_infrastructure
+      - configure_infrastructure
